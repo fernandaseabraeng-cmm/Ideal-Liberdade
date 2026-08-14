@@ -1,0 +1,299 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de Controle de SCs — IDEAL+ LIBERDADE (IL1 + IL2)</title>
+<style>
+:root{--navy:#1B2C4E;--coral:#F15E40;--blue:#2F5CA8;--green:#23A45B;--bg:#EBEEF4;--muted:#64748B;--line:#E6EAF1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Nunito,Arial,sans-serif;background:var(--bg);color:#1B2C4E;padding:22px;font-size:14px}
+.wrap{max-width:1300px;margin:0 auto}
+header{background:var(--navy);color:#fff;border-radius:16px;padding:22px 28px;box-shadow:0 6px 20px rgba(27,44,78,.18);border-bottom:5px solid var(--coral)}
+header h1{font-size:19px;font-weight:800;letter-spacing:.2px;line-height:1.2} header h1 b{color:var(--coral)}
+header p{opacity:.85;font-size:12.5px;margin-top:5px}
+.fbands{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0 0}
+.fcard{flex:1;min-width:200px;background:#fff;border-radius:12px;padding:13px 16px;box-shadow:0 2px 10px rgba(27,44,78,.06);border-left:5px solid var(--coral)}
+.fcard .ft{font-weight:800;color:var(--navy);font-size:13.5px} .fcard .fs{font-weight:600;color:var(--muted);font-size:12px;margin-top:3px}
+.fcard.b{border-left-color:var(--blue)} .fcard.g{border-left-color:var(--green)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0}
+.kpi{background:#fff;border-radius:14px;padding:16px 18px;box-shadow:0 2px 10px rgba(27,44,78,.06);border-top:4px solid var(--coral)}
+.kpi .n{font-size:30px;font-weight:800;line-height:1;color:var(--navy)} .kpi .l{font-size:12px;color:var(--muted);margin-top:6px}
+.kpi.p{border-top-color:#E8A33D} .kpi.p .n{color:#D98A22}
+.kpi.a{border-top-color:var(--green)} .kpi.a .n{color:var(--green)}
+.kpi.b{border-top-color:var(--blue)} .kpi.b .n{color:var(--blue)}
+.card{background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(27,44,78,.06);margin-bottom:20px;overflow:hidden}
+.card h2{background:#fff;color:var(--navy);font-size:14.5px;font-weight:800;padding:14px 20px;border-bottom:2px solid var(--line);display:flex;align-items:center;gap:10px}
+.card h2::before{content:"";width:9px;height:20px;background:var(--coral);border-radius:3px;display:inline-block}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{background:var(--navy);color:#fff;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+td.sc{font-weight:800;color:var(--navy);white-space:nowrap}
+td.ctr{text-align:center} td.det{font-size:12.5px;color:#33414f;line-height:1.5}
+tr.rowsc{cursor:pointer} tr.rowsc:hover{background:#F5F7FB}
+td.exp{width:26px;text-align:center;color:var(--coral);font-weight:800;font-size:16px}
+.fase{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;background:#E7ECF6;color:var(--navy);white-space:nowrap}
+.tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.tag.mat{background:#DEE8F7;color:var(--blue)} .tag.serv{background:#FBE0D8;color:#B4472B}
+.st{display:inline-block;padding:4px 11px;border-radius:8px;font-size:11px;font-weight:800;white-space:nowrap}
+.st.pend{background:#FCEBCE;color:#96650B} .st.apr{background:#D6F0E1;color:#127A44} .st.rep{background:#FBD9D2;color:#B23A22}
+.drow>td{background:#FAFBFD;padding:0;border-bottom:2px solid var(--line)}
+.detail{padding:16px 20px}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:22px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+.detail h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--navy);margin:2px 0 8px;font-weight:800} h3.mt{margin-top:14px}
+ol.aj{margin:0 0 0 18px;padding:0} ol.aj li{margin:6px 0;font-size:13px;line-height:1.55;color:#33414f}
+ul.good{margin:0;padding:0;list-style:none} ul.good li{margin:6px 0;font-size:12.5px;color:#127A44;position:relative;padding-left:16px}
+ul.good li::before{content:"✔";position:absolute;left:0;color:#23A45B;font-weight:800}
+.mtx table{width:100%;border-collapse:collapse} .mtx td.itn{font-size:12px;font-weight:600;color:#33414f;border:1px solid var(--line);padding:7px 9px}
+td.mc{text-align:center;font-weight:800;width:46px;border:1px solid var(--line)}
+.mok{background:#D6F0E1;color:#127A44} .mno{background:#FBD9D2;color:#B0170A} .mna{background:#EEF1F5;color:#8a8a8a}
+.meta{margin-top:12px;font-size:12px;color:#33414f;line-height:1.7;background:#F5F7FB;border-radius:8px;padding:10px 12px}
+.toolbar{background:#fff;border-radius:16px;box-shadow:0 2px 10px rgba(27,44,78,.06);padding:15px 20px;margin:20px 0;display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center}
+.toolbar input[type=text]{flex:1;min-width:220px;padding:10px 13px;border:1px solid #d3dae2;border-radius:10px;font-size:13px;font-family:inherit}
+.toolbar input[type=text]:focus{outline:none;border-color:var(--navy)}
+.fgroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center} .fgroup .lbl{font-size:11px;color:var(--muted);margin-right:2px;font-weight:700}
+.chip{padding:7px 13px;border:1px solid #d3dae2;border-radius:20px;font-size:12px;font-weight:700;background:#fff;color:#33414f;cursor:pointer;user-select:none}
+.chip:hover{border-color:var(--navy)} .chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.count{font-size:12px;color:var(--muted);margin-left:auto} .count b{color:var(--navy)}
+.aprbox{background:#D6F0E1;color:#127A44;font-weight:800;font-size:13px;border-radius:8px;padding:11px 13px;border-left:4px solid var(--green)}
+.nodata{padding:18px;text-align:center;color:#96650B;font-size:13px;font-weight:700} .hide{display:none}
+.foot{font-size:11.5px;color:var(--muted);padding:13px 20px;line-height:1.6}
+</style></head><body><div class="wrap">
+<header><div class="htxt">
+<h1>Painel de Controle de Solicitações de Compra — <b>IDEAL+ LIBERDADE (IL1 + IL2)</b></h1>
+<p>IL1 (obras 1470/1477) + IL2 (obra 1460) · atualizado a cada SC · Custo por Nível 10/08/2026</p>
+</div></header>
+<div class="fbands"><div class="fcard "><div class="ft">IL1 · Fase 1 · Obra 1470</div><div class="fs">17 torres · 340 unidades</div></div><div class="fcard b"><div class="ft">IL1 · Fase 2 · Obra 1477</div><div class="fs">10 torres · 200 unidades</div></div><div class="fcard g"><div class="ft">IL2 · Fase 1 · Obra 1460</div><div class="fs">16 torres · 320 unidades</div></div></div>
+<div class="kpis">
+<div class="kpi"><div class="n">20</div><div class="l">SCs analisadas</div></div>
+<div class="kpi p"><div class="n">7</div><div class="l">Pendentes / a ajustar</div></div>
+<div class="kpi a"><div class="n">13</div><div class="l">Aprovadas</div></div>
+<div class="kpi b"><div class="n">13 / 7</div><div class="l">Material / Serviço</div></div>
+</div>
+<div class="toolbar">
+<input id="q" type="text" placeholder="Buscar por nº da SC, objeto ou ajuste…" oninput="applyF()">
+<div class="fgroup"><span class="lbl">Status:</span>
+<span class="chip on" data-f="st" data-v="all" onclick="pick(this)">Todas</span>
+<span class="chip" data-f="st" data-v="apr" onclick="pick(this)">Aprovadas</span>
+<span class="chip" data-f="st" data-v="pend" onclick="pick(this)">Pendentes</span></div>
+<div class="fgroup"><span class="lbl">Obra:</span>
+<span class="chip on" data-f="ob" data-v="all" onclick="pick(this)">Todas</span>
+<span class="chip" data-f="ob" data-v="IL1" onclick="pick(this)">IL1</span>
+<span class="chip" data-f="ob" data-v="IL2" onclick="pick(this)">IL2</span></div>
+<div class="fgroup"><span class="lbl">Fase:</span>
+<span class="chip on" data-f="fa" data-v="all" onclick="pick(this)">Todas</span>
+<span class="chip" data-f="fa" data-v="1" onclick="pick(this)">F1</span>
+<span class="chip" data-f="fa" data-v="2" onclick="pick(this)">F2</span></div>
+<div class="fgroup"><span class="lbl">Tipo:</span>
+<span class="chip on" data-f="tp" data-v="all" onclick="pick(this)">Todos</span>
+<span class="chip" data-f="tp" data-v="mat" onclick="pick(this)">Material</span>
+<span class="chip" data-f="tp" data-v="serv" onclick="pick(this)">Serviço</span></div>
+<div class="fgroup"><span class="lbl">Responsável:</span><span class="chip on" data-f="rp" data-v="all" onclick="pick(this)">Todos</span><span class="chip" data-f="rp" data-v="genesis-calebe-da-conceicao-carneiro" onclick="pick(this)">Gênesis Calebe da Conceição Carneiro</span><span class="chip" data-f="rp" data-v="jakeline-dias-pereira" onclick="pick(this)">Jakeline Dias Pereira</span><span class="chip" data-f="rp" data-v="jakeline-pereira" onclick="pick(this)">Jakeline Pereira</span><span class="chip" data-f="rp" data-v="jessiane-figueiredo" onclick="pick(this)">Jessiane Figueiredo</span><span class="chip" data-f="rp" data-v="lucas-gabriel-da-silva-costa" onclick="pick(this)">Lucas Gabriel da Silva Costa</span><span class="chip" data-f="rp" data-v="luiz-gabriel-ferreira-matoso" onclick="pick(this)">Luiz Gabriel Ferreira Matoso</span><span class="chip" data-f="rp" data-v="victor-renato-cordeiro-trindade" onclick="pick(this)">Victor Renato Cordeiro Trindade</span><span class="chip" data-f="rp" data-v="vinicius-oliveira" onclick="pick(this)">Vinicius Oliveira</span><span class="chip" data-f="rp" data-v="vinicius-de-magalhaes-oliveira" onclick="pick(this)">Vinicius de Magalhaes Oliveira</span></div>
+<span class="count" id="cnt"></span>
+</div>
+<div class="card"><h2>Solicitações e ajustes — clique na linha para ver o detalhe</h2>
+<table><thead><tr><th></th><th>SC</th><th>Obra·Fase</th><th>Objeto</th><th>Tipo</th><th>Status</th><th>Detalhamento</th></tr></thead>
+<tbody>
+<tr class="rowsc" data-sc="1398193" data-st="pend" data-tp="mat" data-ob="IL1" data-fa="1" data-resp="lucas-gabriel-da-silva-costa" data-text="1398193 haste inspecao post-it material escritorio administrativo il1 fase 1 1470 lucas apropriacao 01.006.001.001 01.003.001.007 data necessidade vencida" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398193</td><td><span class="fase">IL1 · F1</span></td>
+<td>Haste de inspeção (aço inox) para testes nos apartamentos + material de escritório (post-it) — uso administrativo.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st pend">AJUSTAR</span></td><td class="det">Anexar o levantamento e alinhar a data de necessidade ao cronograma.</td></tr>
+<tr class="drow hide" data-for="1398193"><td colspan="7"><div class="detail"><div class="grid2">
+<div><h3>Ajustes para a obra</h3><ol class="aj"><li>Anexar o <b>levantamento</b>.</li><li>Alinhar a <b>data de necessidade</b> ao cronograma.</li></ol><h3 class="mt">Já está ok</h3><ul class="good"><li>Códigos novos (≥12000) e descrições coerentes com o que está sendo pedido.</li><li>Apropriação correta: haste em 01.006.001.001 (equipamentos e ferramentas de uso diário) e post-it em 01.003.001.007 (consumo de materiais de escritório).</li><li>Cronograma de entrega anexado, com os itens (haste e post-it).</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mno">X</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mno">X</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.006.001.001 – Equipamentos e ferramentas de uso diário · 01.003.001.007 – Consumo de materiais de escritório (UC 1 · Administração)<br><b>Responsável:</b> Lucas Gabriel da Silva Costa · <b>Entrega:</b> 17/08/2026 (rever 09/07)</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398706" data-st="apr" data-tp="mat" data-ob="IL1" data-fa="1" data-resp="vinicius-de-magalhaes-oliveira" data-text="1398706 material eletrico eletroduto corrugado descida poste caixa 4x2 drywall spda il1 fase 1 1470 vinicius apropriacao sdee sdda sdai instalacao eletrica predial projeto prancha metragem" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398706</td><td><span class="fase">IL1 · F1</span></td>
+<td>Material elétrico — eletrodutos (descida de postes e infra), caixas 4x2 para drywall e material de SPDA.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1398706"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Códigos, descrições e quantidades conferem com o levantamento (caixas 4x2 = 1 por apartamento + 10%).</li><li>Apropriações corretas (SDEE, SDDA, SDAI, instalação elétrica predial e SPDA).</li><li>Levantamento com projeto de referência e cronograma anexados.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 04.001.001.001 SDEE · 04.002.001.001 SDDA · 04.003.001.001 SDAI (UC 2) · 01.005.005.001 Instalação elétrica predial · 01.005.005.004 SPDA (UC 3)<br><b>Responsável:</b> Vinicius de Magalhaes Oliveira · <b>Entrega:</b> 05/11/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1399082" data-st="apr" data-tp="mat" data-ob="IL1" data-fa="1" data-resp="vinicius-de-magalhaes-oliveira" data-text="1399082 fita aco perfurada fixacao tubulacao hidraulica sanitaria ses sdh il1 fase 1 1470 vinicius complementar data cronograma" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1399082</td><td><span class="fase">IL1 · F1</span></td>
+<td>Fita de aço perfurada (fixação de tubulação hidráulica e sanitária) — complementar.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1399082"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Levantamento embasado: consumo por apartamento × unidades da fase, menos o que já foi pedido.</li><li>Apropriação correta: fita dividida entre SES e SDH (fechamento · UC 3), com verba.</li><li>Cronograma anexado; data de necessidade ajustada pela obra.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.005.005.005 – Instalação SES · 01.005.005.006 – Instalação SDH (fechamento · UC 3)<br><b>Responsável:</b> Vinicius de Magalhaes Oliveira · <b>Entrega:</b> 04/11/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1399089" data-st="apr" data-tp="mat" data-ob="IL1" data-fa="1" data-resp="lucas-gabriel-da-silva-costa" data-text="1399089 cantoneira perfil aco drywall gesso forro sanca torres il1 fase 1 1470 lucas apropriacao dupla contagem compra local 5 torres 800 sla" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1399089</td><td><span class="fase">IL1 · F1</span></td>
+<td>Cantoneira L (perfil de aço drywall) para o serviço de gesso das torres — forro e sanca.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1399089"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Levantamento embasado (4 perfis por UH × 320 UH) e projeto anexado (plantas de forro e baixa da torre tipo).</li><li>Apropriação em forro (01.010.002.001) e sanca (01.010.002.002), UC 3.</li><li>Códigos, descrição e quantidade ok.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mna">N/A</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.010.002.001 – Forro de gesso · 01.010.002.002 – Sanca de gesso (UC 3 · Torres)<br><b>Responsável:</b> Lucas Gabriel da Silva Costa · <b>Entrega:</b> 19/08/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1399088" data-st="apr" data-tp="serv" data-ob="IL1" data-fa="1" data-resp="victor-renato-cordeiro-trindade" data-text="1399088 aditivo contrato cts 25202 mobilizacao desmobilizacao serra clipper vibrador martelete locacao equipamentos leves il1 fase 1 1470 victor apropriacao melhorias entorno servico aprovada" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1399088</td><td><span class="fase">IL1 · F1</span></td>
+<td>Aditivo do contrato CTS/25202 — mobilização e desmobilização de equipamentos (serra clipper, vibrador, 2 marteletes).</td><td class="ctr"><span class="tag serv">Serviço</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1399088"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Apropriação correta, dividida entre martelete (01.006.002.002), vibrador (01.006.002.003) e serra clipper / melhorias de entorno (01.001.002.003), batendo com o contrato.</li><li>QC reflete o custo por nível atual e a quantidade confere com o SIENGE (2 un).</li><li>Cronograma anexado; contrato CTS/25202 em andamento.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Levantamento</td><td class="mc mna">N/A</td></tr><tr><td class="itn">6. Escopo detalhado</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. QC × custo por nível</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Qtd do QC × SIENGE</td><td class="mc mok">✔</td></tr><tr><td class="itn">9. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">10. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">11. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.006.002.002 Martelete · 01.006.002.003 Vibrador (UC 1) · 01.001.002.003 Melhorias de entorno (UC 4)<br><b>Responsável:</b> Victor Renato Cordeiro Trindade · <b>Entrega:</b> 25/08/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1399110" data-st="apr" data-tp="serv" data-ob="IL1" data-fa="1" data-resp="genesis-calebe-da-conceicao-carneiro" data-text="1399110 seguranca patrimonial vigilancia portaria armada desarmada il1 fase 1 1470 genesis apropriacao 01.001.003.001 cts 21510 suprimir saldo qc paisagismo escopo servico" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1399110</td><td><span class="fase">IL1 · F1</span></td>
+<td>Serviço de segurança patrimonial (vigilância e portaria), 10 meses — substitui o contrato CTS/21510.</td><td class="ctr"><span class="tag serv">Serviço</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1399110"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Insumo corrigido para vigilância DESARMADA (17565), batendo com a observação (agente de portaria desarmado).</li><li>Apropriação correta em Serviço de vigilância (01.001.003.001, UC 1); escopo e QC conferem; quantidade (10 meses) confere.</li><li>Substitui o contrato anterior (suprime o saldo do CTS/21510) — não é duplicidade.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Levantamento</td><td class="mc mna">N/A</td></tr><tr><td class="itn">6. Escopo detalhado</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. QC × custo por nível</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Qtd do QC × SIENGE</td><td class="mc mok">✔</td></tr><tr><td class="itn">9. Cronograma anexado</td><td class="mc mna">N/A</td></tr><tr><td class="itn">10. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">11. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.001.003.001 – Serviço de vigilância (UC 1 · Administração)<br><b>Responsável:</b> Gênesis Calebe da Conceição Carneiro · <b>Entrega:</b> 20/09/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1397558" data-st="apr" data-tp="mat" data-ob="IL1" data-fa="2" data-resp="genesis-calebe-da-conceicao-carneiro" data-text="1397558 material gesso drywall forro sanca shaft torres il1 fase 2 1477 genesis parafuso placa perfil cantoneira 18192 pino 17690 duplicidade 1396778 levantamento projeto" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1397558</td><td><span class="fase">IL1 · F2</span></td>
+<td>Material para o serviço de gesso das torres (forro, sanca e shaft) — parafusos, gesso, placas, perfis, cantoneira e acessórios.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1397558"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Códigos 12504 (16 cx), 21608 (60 bd) e 21607 (200 kg) confirmados — batem com o levantamento em quantidade e unidade.</li><li>Apropriações em forro (01.010.002.001), sanca (01.010.002.002) e shaft (01.006.001.002), UC 3, existentes na fase.</li><li>Projeto anexado (plantas de forro e baixa) e cronograma marcando a 1ª semana de setembro (bate com a entrega).</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.010.002.001 Forro · 01.010.002.002 Sanca · 01.006.001.002 Shaft (UC 3 · Torres)<br><b>Responsável:</b> Gênesis Calebe da Conceição Carneiro · <b>Entrega:</b> 05/09/2026 (cantoneira 20/10)</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1397961" data-st="pend" data-tp="mat" data-ob="IL1" data-fa="2" data-resp="jakeline-dias-pereira" data-text="1397961 disco corte diamantado desbaste concreto ceramica porcelanato estucamento lixamento requadro esquadria janela il1 fase 2 1477 jakeline aprovada" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1397961</td><td><span class="fase">IL1 · F2</span></td>
+<td>Discos de corte (cerâmica/porcelanato) e de desbaste (concreto) — cerâmica, estucamento e lixamento de requadro das esquadrias.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st pend">AJUSTAR</span></td><td class="det">Apropriar em 01.006.001.001; verificar a qtd do 12123 e ajustar o prazo ao cronograma.</td></tr>
+<tr class="drow hide" data-for="1397961"><td colspan="7"><div class="detail"><div class="grid2">
+<div><h3>Ajustes para a obra</h3><ol class="aj"><li>Apropriar em <b>01.006.001.001</b> (equipamentos e ferramentas de uso diário).</li><li>Quantidade do item <b>12123</b> divergente do levantamento — verificar.</li><li>Ajustar o <b>prazo/data de necessidade</b> de acordo com o cronograma.</li></ol><h3 class="mt">Já está ok</h3><ul class="good"><li>Códigos e descrições coerentes com o pedido.</li><li>Levantamento e cronograma anexados.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mno">X</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mno">X</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mno">X</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.006.001.001 – Equipamentos e ferramentas de uso diário (UC 1)<br><b>Responsável:</b> Jakeline Dias Pereira · <b>Entrega:</b> 15/08/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398761" data-st="apr" data-tp="serv" data-ob="IL1" data-fa="2" data-resp="victor-renato-cordeiro-trindade" data-text="1398761 cobertura estrutura metalica telha aco trapezoidal tp-40 fibrocimento mao de obra 10 torres 1425 m2 il1 fase 2 1477 victor apropriacao 01.004.001.001 servico" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398761</td><td><span class="fase">IL1 · F2</span></td>
+<td>M.O. de execução de cobertura em estrutura metálica — 10 torres padrão (1.425,6 m²), com calhas, rufos e acessórios.</td><td class="ctr"><span class="tag serv">Serviço</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1398761"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Levantamento (10 torres × 142,56 = 1.425,6 m²), escopo com a metragem e projeto anexado (prancha do telhado e arquitetura da torre).</li><li>Apropriação correta em cobertura (01.004.001.001, UC 3), com verba; QC e quantidade (1.425,6 m²) conferem.</li><li>Cronograma marca novembro/26 (bate com a necessidade 23/11). É M.O.; a telha metálica é o padrão da obra (F1 e F2), comprada à parte.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Escopo detalhado</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. QC × custo por nível</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Qtd do QC × SIENGE</td><td class="mc mok">✔</td></tr><tr><td class="itn">9. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">10. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">11. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.004.001.001 – Cobertura em estrutura metálica (UC 3 · Torres)<br><b>Responsável:</b> Victor Renato Cordeiro Trindade · <b>Entrega:</b> 23/11/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398851" data-st="apr" data-tp="mat" data-ob="IL1" data-fa="2" data-resp="victor-renato-cordeiro-trindade" data-text="1398851 prumada incendio spci tubo joelho te niple luva fita veda tinta zarcao esmalte disco trincha rolo thinner il1 fase 2 1477 victor apropriacao 01.005.005.009 01.006.001.001 ferramenta 10 torres" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398851</td><td><span class="fase">IL1 · F2</span></td>
+<td>Materiais para execução das prumadas de incêndio (10 torres) — tubos e conexões FG, tinta e itens de aplicação.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1398851"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Levantamento por torre × 10 e apropriação no SPCI (01.005.005.009, UC 3), com verba.</li><li>Cronograma marca novembro/26 (bate com a necessidade 23/11).</li><li>Códigos, descrições e quantidades coerentes com o pedido.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.005.005.009 – Instalação sistema de combate a incêndio (UC 3)<br><b>Responsável:</b> Victor Renato Cordeiro Trindade · <b>Entrega:</b> 23/11/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398931" data-st="apr" data-tp="mat" data-ob="IL1" data-fa="2" data-resp="vinicius-de-magalhaes-oliveira" data-text="1398931 infra eletrica monolitico eletroduto corrugado caixa 4x2 4x4 passagem kit concretagem 1 torre padrao il1 fase 2 1477 vinicius apropriacao 01.005.003.001 data cronograma agosto" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398931</td><td><span class="fase">IL1 · F2</span></td>
+<td>Infra elétrica para monolítico (1 torre padrão) — eletrodutos corrugados e caixas (kit de concretagem).</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada. Solicitação urgente (falta de kit da concretagem); SLA dispensado a pedido da obra.</td></tr>
+<tr class="drow hide" data-for="1398931"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Levantamento bate com a SC (por torre): eletrodutos e caixas coerentes com o consumo do monolítico.</li><li>Apropriação correta em instalação elétrica predial – estrutura (01.005.003.001, UC 3).</li><li>Cronograma anexado; códigos, descrições e quantidades ok.</li><li>SC urgente para suprir a falta de kit elétrico da concretagem; SLA não aplicável a pedido da obra.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mna">N/A</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.005.003.001 – Instalação elétrica predial (ELE) – estrutura (UC 3 · Torres)<br><b>Responsável:</b> Vinicius de Magalhaes Oliveira · <b>Entrega:</b> 05/11/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1394953" data-st="apr" data-tp="serv" data-ob="IL2" data-fa="1" data-resp="luiz-gabriel-ferreira-matoso" data-text="1394953 casa de maquinas reservatorio casa de bombas castelo mao de obra locacao gabarito fundacao radier alvenaria estrutural laje pre-moldada instalacao eletrica revestimento externo reboco il2 fase 1 1460 liberdade 2 luiz gabriel apropriacao 06.003 04.009.002.001 servico qc ref cronograma" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1394953</td><td><span class="fase">IL2 · F1</span></td>
+<td>M.O. de execução da casa de máquinas do reservatório — locação, fundação, alvenaria estrutural, laje pré-moldada, instalação elétrica e revestimento externo.</td><td class="ctr"><span class="tag serv">Serviço</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1394953"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Levantamento detalhado batendo com a SC: alvenaria 23,84 m², laje 9,05 m², gabarito 15,76 m, fundação 1,61 m³, reboco 26,90 m², elétrica 1 vb.</li><li>Escopo detalhado (itens 4.1–4.6 com quantidades) e projeto estrutural da casa de máquinas anexado (1465-EST-EX-001-CMQ).</li><li>Apropriações corretas em M.O. — casa de bombas do reservatório (06.003.*) e instalações (04.009.002.001), UC 2; quantidades do QC = SIENGE.</li><li>QC reflete a SC e o custo por nível: apropriação, quantidade, unidade e orçado/comprometido/saldo batem linha a linha; cronograma anexado (set–out/26), necessidade 09/09 no início da janela.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Escopo detalhado</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. QC × custo por nível</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Qtd do QC × SIENGE</td><td class="mc mok">✔</td></tr><tr><td class="itn">9. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">10. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">11. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 06.003.* (Casa de bombas do reservatório) + 04.009.002.001 (Instalações) – M.O. (UC 2)<br><b>Responsável:</b> Luiz Gabriel Ferreira Matoso · <b>Entrega:</b> 09/09/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398871" data-st="apr" data-tp="mat" data-ob="IL2" data-fa="1" data-resp="victor-renato-cordeiro-trindade" data-text="1398871 prumada de incendio scpi sci fechamento 16 torres geminadas isolada pcd tubo joelho te niple luva fita veda rosca disco tinta esmalte zarcao thinner trincha rolo barbante il2 fase 1 1460 liberdade 2 victor apropriacao 01.005.005.009 data janeiro 2027 cronograma levantamento" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398871</td><td><span class="fase">IL2 · F1</span></td>
+<td>Material para execução das prumadas de incêndio — 16 torres (14 geminadas + 1 isolada + 1 PcD): tubos/conexões FG 2½&quot;, fita veda, tintas e itens de aplicação.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1398871"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Data corrigida para 04/01/2027 (janeiro), batendo com o cronograma.</li><li>Consumíveis ajustados ao levantamento: fita veda 98, disco 50, trincha 9, thinner 9, barbante 9, esmalte 17, zarcão 4,5 (rolo 18240 = 6 considerado pela obra).</li><li>Tubos e conexões FG 2½&quot; batem (tubo 36, joelho 19, tê 73, niple 87, luva 19); apropriação no SCI – fechamento (01.005.005.009, UC 3).</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.005.005.009 – Instalação sistema de combate a incêndio (SCI) – fechamento (UC 3 · Torres)<br><b>Responsável:</b> Victor Renato Cordeiro Trindade · <b>Entrega:</b> 04/01/2027</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398794" data-st="apr" data-tp="mat" data-ob="IL2" data-fa="1" data-resp="jessiane-figueiredo" data-text="1398794 sistema de exaustao miniexaustor exaustor duto ventilacao flexivel helicoidal grelha saida de ar abracadeira nylon adesivo selante parafuso bucha fita perfurada il2 fase 1 1460 liberdade 2 jessiane apropriacao 01.005.007.001 ele acabamento cronograma novembro" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398794</td><td><span class="fase">IL2 · F1</span></td>
+<td>Material do sistema de exaustão — 16 torres: miniexaustores 110V Ø100, dutos flexíveis, grelhas externas e itens de fixação.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1398794"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Quantidades batem com o levantamento (memória de cálculo): exaustor 312, grelha 330, duto 231, abraçadeira 660, adesivo 99, bucha 1.320, fita 5, parafuso 7 cx (1.320 un ÷ 200/cx).</li><li>Apropriação em instalação elétrica predial – acabamento (01.005.007.001, UC 3), com verba; não há linha específica de exaustão → é a mais aderente.</li><li>Cronograma anexado (novembro/26 s1); a necessidade 02/11 bate; sem recompra dos itens de exaustão na IL2.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.005.007.001 – Instalação elétrica predial (ELE) – acabamento (UC 3 · Torres)<br><b>Responsável:</b> Jessiane Figueiredo · <b>Entrega:</b> 02/11/2026</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1395509" data-st="apr" data-tp="serv" data-ob="IL2" data-fa="1" data-resp="vinicius-oliveira" data-text="1395509 controle tecnologico de concreto dos anexos cp ensaio qc cronograma il2 fase 1 1460 liberdade 2 vinicius servico ajustar" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1395509</td><td><span class="fase">IL2 · F1</span></td>
+<td>Controle tecnológico de concreto dos anexos.</td><td class="ctr"><span class="tag serv">Serviço</span></td>
+<td class="ctr"><span class="st apr">APROVADA</span></td><td class="det">Aprovada.</td></tr>
+<tr class="drow hide" data-for="1395509"><td colspan="7"><div class="detail"><div class="grid2">
+<div><div class="aprbox">✔ SC aprovada — sem ajustes.</div><h3 class="mt">Já está ok</h3><ul class="good"><li>Escopo detalhado (108 análises de rompimento) e QC anexados.</li><li>QC bate com o custo por nível (01.005.001.001 — orçado 80.000, comprometido 57.500, saldo 22.500).</li><li>Cronograma anexado; data de necessidade ajustada pela obra.</li></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Escopo detalhado</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. QC × custo por nível</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Qtd do QC × SIENGE</td><td class="mc mok">✔</td></tr><tr><td class="itn">9. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">10. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">11. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> 01.005.001.001 – Controle tecnológico do concreto (UC 1 · Administração)<br><b>Responsável:</b> Vinicius Oliveira · <b>Entrega:</b> 07/09/2026 (rever p/ out/26)</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1393823" data-st="pend" data-tp="serv" data-ob="IL2" data-fa="1" data-resp="jakeline-pereira" data-text="1393823 locacao de escoramento metalico torre pcd equipamentos il2 fase 1 1460 liberdade 2 jakeline servico levantamento escopo qc cronograma prazo ajustar" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1393823</td><td><span class="fase">IL2 · F1</span></td>
+<td>Locação de escoramento metálico para a torre PcD.</td><td class="ctr"><span class="tag serv">Serviço</span></td>
+<td class="ctr"><span class="st pend">AJUSTAR</span></td><td class="det">Melhorar o levantamento, anexar o escopo, verificar o QC e atualizar cronograma e prazo.</td></tr>
+<tr class="drow hide" data-for="1393823"><td colspan="7"><div class="detail"><div class="grid2">
+<div><h3>Ajustes para a obra</h3><ol class="aj"><li>Melhorar o <b>levantamento</b>.</li><li>Anexar o <b>escopo</b> (ausente).</li><li>Verificar os <b>valores da análise orçamentária do QC</b>.</li><li>Atualizar o <b>cronograma</b>.</li><li>Atualizar o <b>prazo</b>.</li></ol><h3 class="mt">Já está ok</h3><ul class="good"></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Levantamento</td><td class="mc mno">X</td></tr><tr><td class="itn">6. Escopo detalhado</td><td class="mc mno">X</td></tr><tr><td class="itn">7. QC × custo por nível</td><td class="mc mno">X</td></tr><tr><td class="itn">8. Qtd do QC × SIENGE</td><td class="mc mna">N/A</td></tr><tr><td class="itn">9. Cronograma anexado</td><td class="mc mno">X</td></tr><tr><td class="itn">10. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">11. Prazo de SLA</td><td class="mc mno">X</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> —<br><b>Responsável:</b> Jakeline Pereira · <b>Entrega:</b> —</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1394062" data-st="pend" data-tp="mat" data-ob="IL2" data-fa="1" data-resp="jakeline-pereira" data-text="1394062 material area de vivencia il2 fase 1 1460 liberdade 2 jakeline orcamento cronograma levantamento prazo sla vencido ajustar" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1394062</td><td><span class="fase">IL2 · F1</span></td>
+<td>Material para a área de vivência.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st pend">AJUSTAR</span></td><td class="det">Verificar item fora do orçamento; anexar cronograma e levantamento; ajustar o prazo.</td></tr>
+<tr class="drow hide" data-for="1394062"><td colspan="7"><div class="detail"><div class="grid2">
+<div><h3>Ajustes para a obra</h3><ol class="aj"><li><b>Verificar o item</b> solicitado que não consta no orçamento.</li><li>Anexar o <b>cronograma</b>.</li><li>Anexar o <b>levantamento</b>.</li><li>Ajustar o <b>prazo de SLA</b> (vencido).</li></ol><h3 class="mt">Já está ok</h3><ul class="good"></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mno">X</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mno">X</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mno">X</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mno">X</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mna">N/A</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mno">X</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> —<br><b>Responsável:</b> Jakeline Pereira · <b>Entrega:</b> —</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1396597" data-st="pend" data-tp="serv" data-ob="IL2" data-fa="1" data-resp="luiz-gabriel-ferreira-matoso" data-text="1396597 material e mao de obra impermeabilizacao ideal liberdade 2 il2 fase 1 1460 luiz gabriel apropriacao escopo qc quantidade projeto ajustar" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1396597</td><td><span class="fase">IL2 · F1</span></td>
+<td>Material e mão de obra para impermeabilização da IL2.</td><td class="ctr"><span class="tag serv">Serviço</span></td>
+<td class="ctr"><span class="st pend">AJUSTAR</span></td><td class="det">Ajustar apropriações; anexar escopo e projeto; atualizar QC e a quantidade.</td></tr>
+<tr class="drow hide" data-for="1396597"><td colspan="7"><div class="detail"><div class="grid2">
+<div><h3>Ajustes para a obra</h3><ol class="aj"><li>Ajustar as <b>apropriações</b>.</li><li>Anexar o <b>escopo</b> (falta).</li><li>Atualizar o <b>QC</b> conforme o custo por nível.</li><li>Ajustar a <b>quantidade</b> conforme o SIENGE.</li><li>Anexar o <b>projeto de referência</b>.</li></ol><h3 class="mt">Já está ok</h3><ul class="good"></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mno">X</td></tr><tr><td class="itn">5. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">6. Escopo detalhado</td><td class="mc mno">X</td></tr><tr><td class="itn">7. QC × custo por nível</td><td class="mc mno">X</td></tr><tr><td class="itn">8. Qtd do QC × SIENGE</td><td class="mc mno">X</td></tr><tr><td class="itn">9. Cronograma anexado</td><td class="mc mok">✔</td></tr><tr><td class="itn">10. Projeto (quando necessário)</td><td class="mc mno">X</td></tr><tr><td class="itn">11. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> —<br><b>Responsável:</b> Luiz Gabriel Ferreira Matoso · <b>Entrega:</b> —</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398893" data-st="pend" data-tp="mat" data-ob="IL2" data-fa="1" data-resp="jessiane-figueiredo" data-text="1398893 mao de obra prumas hidrossanitarias sistema de exaustao torres padrao pcd il2 fase 1 1460 liberdade 2 jessiane cronograma sla ajustar" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398893</td><td><span class="fase">IL2 · F1</span></td>
+<td>M.O. para prumas hidrossanitárias (15 torres padrão + 1 PcD) e sistema de exaustão (15 torres padrão).</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st pend">AJUSTAR</span></td><td class="det">Atualizar o cronograma conforme o prazo de SLA.</td></tr>
+<tr class="drow hide" data-for="1398893"><td colspan="7"><div class="detail"><div class="grid2">
+<div><h3>Ajustes para a obra</h3><ol class="aj"><li>Atualizar o <b>cronograma</b> conforme o prazo de SLA.</li></ol><h3 class="mt">Já está ok</h3><ul class="good"></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mok">✔</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mno">X</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mok">✔</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mok">✔</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> —<br><b>Responsável:</b> Jessiane Figueiredo · <b>Entrega:</b> —</div></div>
+</div></div></td></tr>
+<tr class="rowsc" data-sc="1398910" data-st="pend" data-tp="mat" data-ob="IL2" data-fa="1" data-resp="luiz-gabriel-ferreira-matoso" data-text="1398910 material revestimento ceramico il2 fase 1 1460 liberdade 2 luiz gabriel quantidade cronograma levantamento prazo sla vencido ajustar" onclick="toggle(this)">
+<td class="exp">+</td><td class="sc">1398910</td><td><span class="fase">IL2 · F1</span></td>
+<td>Material para revestimento cerâmico.</td><td class="ctr"><span class="tag mat">Material</span></td>
+<td class="ctr"><span class="st pend">AJUSTAR</span></td><td class="det">Confirmar a quantidade; anexar cronograma e levantamento; atualizar o prazo.</td></tr>
+<tr class="drow hide" data-for="1398910"><td colspan="7"><div class="detail"><div class="grid2">
+<div><h3>Ajustes para a obra</h3><ol class="aj"><li>Confirmar a <b>quantidade</b> solicitada.</li><li>Anexar o <b>cronograma</b>.</li><li>Anexar o <b>levantamento</b>.</li><li>Atualizar o <b>prazo de SLA</b> (vencido).</li></ol><h3 class="mt">Já está ok</h3><ul class="good"></ul></div>
+<div><h3>Matriz dos itens</h3><div class="mtx"><table><tbody><tr><td class="itn">1. SC c/ códigos novos</td><td class="mc mok">✔</td></tr><tr><td class="itn">2. Descrição dos insumos</td><td class="mc mok">✔</td></tr><tr><td class="itn">3. Qtd e unidade</td><td class="mc mno">X</td></tr><tr><td class="itn">4. Apropriações corretas</td><td class="mc mok">✔</td></tr><tr><td class="itn">5. Cronograma anexado</td><td class="mc mno">X</td></tr><tr><td class="itn">6. Levantamento</td><td class="mc mno">X</td></tr><tr><td class="itn">7. Projeto (quando necessário)</td><td class="mc mok">✔</td></tr><tr><td class="itn">8. Prazo de SLA</td><td class="mc mno">X</td></tr></tbody></table></div>
+<div class="meta"><b>Apropriação:</b> —<br><b>Responsável:</b> Luiz Gabriel Ferreira Matoso · <b>Entrega:</b> —</div></div>
+</div></div></td></tr>
+</tbody></table>
+<div class="nodata hide" id="nodata">Nenhuma SC encontrada com esses filtros.</div></div>
+<div class="foot">Painel atualizado a cada SC analisada. Custo por Nível é snapshot diário (verba = orçado − comprometido); snapshot 10/08/2026. Custo/cotação de fornecedores é de Suprimentos e não entra na análise.</div>
+</div>
+<script>
+var fSt='all', fTp='all', fFa='all', fRp='all', fOb='all';
+function pick(el){var f=el.getAttribute('data-f'),v=el.getAttribute('data-v');
+ document.querySelectorAll('.chip[data-f="'+f+'"]').forEach(function(c){c.classList.remove('on');});
+ el.classList.add('on'); if(f==='st'){fSt=v;}else if(f==='tp'){fTp=v;}else if(f==='fa'){fFa=v;}else if(f==='ob'){fOb=v;}else{fRp=v;} applyF();}
+function toggle(row){var sc=row.getAttribute('data-sc');var d=document.querySelector('.drow[data-for="'+sc+'"]');
+ if(!d)return; var open=d.classList.toggle('hide')===false; row.querySelector('.exp').textContent=open?'−':'+';}
+function applyF(){var q=document.getElementById('q').value.toLowerCase().trim();
+ var rows=[].slice.call(document.querySelectorAll('tr.rowsc'));var total=0;
+ rows.forEach(function(r){var okS=(fSt==='all')||(r.getAttribute('data-st')===fSt);
+  var okT=(fTp==='all')||(r.getAttribute('data-tp')===fTp);var okF=(fFa==='all')||(r.getAttribute('data-fa')===fFa);
+  var okO=(fOb==='all')||(r.getAttribute('data-ob')===fOb);
+  var okR=(fRp==='all')||(r.getAttribute('data-resp')===fRp);
+  var okQ=(q==='')||(r.getAttribute('data-text').indexOf(q)>=0);var show=okS&&okT&&okF&&okO&&okR&&okQ;
+  r.classList.toggle('hide',!show);var d=document.querySelector('.drow[data-for="'+r.getAttribute('data-sc')+'"]');
+  if(!show){if(d)d.classList.add('hide');r.querySelector('.exp').textContent='+';} if(show)total++;});
+ document.getElementById('nodata').classList.toggle('hide',total>0);
+ document.getElementById('cnt').innerHTML=total===0?'Nenhum resultado':'Mostrando <b>'+total+'</b> SC(s)';}
+applyF();
+</script>
+</body></html>
